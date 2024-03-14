@@ -1,0 +1,256 @@
+#include"function.h"
+void check_single(bool mode, bool debugging_mode,int left,int right)
+//单目运算符检测
+{
+	//输入部分开始
+	//mode1 全范围检测 0选范围检测
+	//debugging_mode 调试模式，1为打开输出函数与对拍函数的值
+	const int INF = (1 << 31) - 1;
+	if (left == 0 && right == 0)
+	{
+		if (mode)
+		{
+			left = 1 << 31;
+			right = (1 << 31) - 1;
+			cout << "单目运算符全int范围( 1<<31 至 (1<<31) - 1 )检测";
+		}
+		else {
+			cout << "单目运算符检测" << endl;
+			cout << "程序将检测[L,R]范围内的所有整数(int)，请输入L R:";
+			cin >> left >> right;
+			while (left > right)
+			{
+				cout << "\n数据输入错误，应使L<R,重新读入:";
+				cin >> left >> right;
+			}
+		}
+		//输入部分结束
+	}
+	//函数指针数组与name数组
+	int n = 4;
+	int (*array[20])(int x) = {
+		absVal,negate,isTmax,bitCount
+	};
+	int (*array_standard[20])(int x) {
+		absVal_standard, negate_standard, isTmax_standard, bitCount_standard
+	};
+	string name[20] = {
+		"absVal","negate","isTmax","bitCount"
+	};
+
+	//单目运算符对拍检测程序
+	int flag = 1;
+	for (int i = 0; i < n; i++)
+	{
+		flag = 1;
+		if (debugging_mode)
+			cout << name[i] << "测试" << endl;
+		for (int j = left; j <= right; j++)
+		{
+			if (debugging_mode)//每次比较都会拉低效率，应在外部独立开一个代码段， 但为美观合并在内部
+			{
+				cout << "x=" << j << "\t" << (*array[i])(j) << " " << (*array_standard[i])(j) << endl;
+				if (j == INF)
+					break;
+				continue;
+			}
+			if ((*array[i])(j) != (*array_standard[i])(j))
+			{
+				cout << name[i] << "错误!" << endl;
+				flag = 0;
+				break;
+			}
+			if (j == INF)
+				break;
+		}
+		if (!debugging_mode && flag)
+		{
+			cout << name[i] << "正确!" << endl;
+		}
+	}
+}
+void check_binary(bool mode_random, bool debugging_mode, bool LMR)
+{
+	//random开启随机数模式 debug开启调试模式 LMR强制保证x>=y
+	int n = 5;//函数个数
+	int numarray[10] = {
+		(1 << 31) - 1,
+		0, 1 << 31, 289, 327,
+		10086, 1999, 123456, -1, -8848
+	};//提供十个数进行运算
+	double helpnum1, helpnum2;
+	if (mode_random)
+	{
+		//random_device seed;//硬件生成随机数种子
+		//ranlux48 engine(seed());//利用种子生成随机数引擎
+		//uniform_int_distribution<> distrib(0, 100);//设置随机数范围，并为均匀分布
+		//int random = distrib(engine);//随机数
+		//helpnum1 = random / 100;
+		//random = distrib(engine);//随机数
+		//helpnum2 = random / 100;
+		srand(time(0));
+		helpnum1 = rand() % 100;
+		helpnum2 = rand() % 100;
+		helpnum1 /= 100;
+		helpnum2 /= 100;
+	}
+	int (*array[10])(int x, int y) = {
+		bitAnd,bitOr,bitXor,bitMask,addOK
+	};
+	int (*array_standard[10])(int x, int y) = {
+		bitAnd_standard,bitOr_standard,bitXor_standard,bitMask_standard,addOK_standard
+	};
+	string name[10] = {
+		"bitAnd","bitOr","bitXor","bitMask","addOK"
+	};
+	bool flag = 1;
+	for (int k = 0; k < n; k++)
+	{
+		cout << name[k] << "测试" << endl;
+		flag = 1;
+		for (int i = 0; i < 10; i++)
+		{
+			for (int j = 0; j < 10; j++)
+			{
+				int x = numarray[i];
+				int y = numarray[j];
+				if (mode_random)
+				{
+					x = helpnum1 * x;//double放在前 
+					y = helpnum2 * y;
+				}
+				if (k == 3)
+				{
+					x = ((x % 32) + 32) % 32;
+					y = ((y % 32) + 32) % 32;
+				}
+				if (LMR && x < y)
+					continue;
+				if (debugging_mode)
+				{
+					printf("(%d,%d)\t\t\t\t", x, y);
+					cout << " " << (*array[k])(x, y) << " " << (*array_standard[k])(x, y) << endl;
+					if (flag && (*array[k])(x, y) != (*array_standard[k])(x, y))
+						flag = 0;
+					continue;
+				}
+				if ((*array[k])(x, y) != (*array_standard[k])(x, y))
+				{
+					cout << name[k] << "错误!" << endl;
+					flag = 0;
+					break;
+				}
+			}
+			if (!flag)
+				break;
+		}
+		if (flag)
+			cout << name[k] << "正确!" << endl;
+		else if(debugging_mode&&!flag)
+			cout << name[k] << "错误!" << endl;
+	}
+}
+void check_byteSwap(bool debugging_mode)
+{
+	int numarray[10] = {
+		-10000,-12345567,0,1,10086,(1 << 31),(1 << 31) - 1,1024,2555555,999999
+	};
+	bool flag = 1;
+	for (int i = 0; i < 10; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			for (int k = 0; k < 4; k++)
+			{
+				if (debugging_mode)
+				{
+					printf("(%x,\t%d,\t%d)\t", numarray[i], j, k);
+					cout <<hex << byteSwap(numarray[i], j, k) << " " << byteSwap_standard(numarray[i], j, k) << endl;
+					if (byteSwap(numarray[i], j, k) != byteSwap_standard(numarray[i], j, k))
+					{
+						flag = 0;
+					}
+				}
+				else
+				{
+					if (byteSwap(numarray[i], j, k) != byteSwap_standard(numarray[i], j, k))
+					{
+						flag = 0;
+						cout << "byteSwap错误!" << endl;
+						break;
+					}
+				}
+			}
+			if (!flag)
+				break;
+		}
+		if (!flag)
+			break;
+	}
+	if (flag)
+		cout << "byteSwap正确!" << endl;
+	else if(debugging_mode&&!flag)
+		cout << "byteSwap错误!" << endl;
+}
+void wait()
+{
+	system("pause");
+	system("cls");
+}
+void test()
+{
+	bool single_mode = 0;			//1为int型全范围检测模式  0为手动输入检测范围模式
+	bool single_debugging_mode = 0;	//1为debugging显示  //left right缺省进入模式选择
+	//void check_single(bool mode, bool debugging_mode,int left,int right)
+	cout << "单目运算符 absVal,negate,isTmax,bitCount开始测试" << endl;
+	wait();
+	check_single(single_mode, single_debugging_mode);//0 0 手动快测
+	wait();
+	check_single(0, 1);//手动debug测
+	wait();
+	cout << "最小一百数测试" << endl;
+	check_single(0, 0, (1 << 31), (1 << 31) + 100);//最小一百数自动快测(101个数)
+	wait();
+	cout << "最小一百数debug测试" << endl;
+	check_single(0, 1, (1 << 31), (1 << 31) + 100);//最小一百数自动debug测
+	wait();
+	cout << "最大一百数测试" << endl;
+	check_single(0, 0, (1 << 31) - 101, (1 << 31) - 1);//最大一百数自动快测
+	wait();
+	cout << "最大一百数debug测试" << endl;
+	check_single(0, 1, (1 << 31) - 101, (1 << 31) - 1);//最大一百数自动debug测
+	wait();
+
+	//void check_binary(bool mode_random, bool debugging_mode, bool LMR)
+	cout << "双目运算符 bitAnd,bitOr,bitXor,bitMask,addOK开始测试" << endl;
+	wait();
+	cout << "普通测试" << endl;
+	check_binary(0, 0, 0);
+	wait();
+	cout << "随机数测试" << endl;
+	check_binary(1, 0, 0);
+	wait();
+	cout << "(x,y)满足x>y时的测试" << endl;
+	check_binary(0, 0, 1);
+	wait();
+	cout << "普通debug测试" << endl;
+	check_binary(0, 1, 0);
+	wait();
+	cout << "随机数debug测试" << endl;
+	check_binary(1, 1, 0);
+	wait();
+	cout << "随机数(x,y)满足x>y debug测试" << endl;
+	check_binary(1, 1, 1);
+	wait();
+
+	//void check_byteSwap(bool debugging_mode)
+	cout << "byteSwap测试" << endl;
+	wait();
+	cout << "byteSwap普通测试" << endl;
+	check_byteSwap(0);
+	wait();
+	cout << "byteSwap debug测试" << endl;
+	check_byteSwap(1);
+	wait();
+
+}
