@@ -1,6 +1,23 @@
-//使用方法：在main函数中直接使用test();
+//功能：单目运算符 双目运算符 及 byteswap的正确性检测（一般范围检测，特殊数据检测，随机数检测）和 debug显示 
+//使用方法：
+//在头文件中声明：
+//void test();
+//void check_single(bool mode, bool debugging_mode, int left = 0, int right = 0);//单目运算符检测程序
+//void check_binary(bool mode_random, bool debugging_mode, bool LMR);//双目运算符检测程序
+//void check_byteSwap(bool debugging_mode);
+//测试程序会给双目运算符bitMask传超出范围的数据，为方便测试和保证测试结果正确，需要在bitMask及其standard中添加以下代码
+//highbit = ((highbit % 32) + 32) % 32;//同时起到保护程序作用
+//lowbit = ((lowbit % 32) + 32) % 32;//两语句仅为兼容check_binary 这样可以少写一个测试函数
+//if (highbit < 0 || lowbit < 0)
+//	return 0;
+//if (highbit < lowbit)
+//	return 0;
 
-#include"function.h"
+//最后在main函数中直接使用test();即可开始检测
+
+
+//以下是函数定义
+
 void check_single(bool mode, bool debugging_mode,int left,int right)
 //单目运算符检测
 {

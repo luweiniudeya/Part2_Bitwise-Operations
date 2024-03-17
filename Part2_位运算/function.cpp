@@ -18,7 +18,7 @@ int absVal(int x)
 		return x;
 	return (~x) + 1;
 }
-int negate(int x) {
+int negate	(int x) {
 	//	不使用负号，实现 - x
 	return (~x) + 1;
 }
@@ -59,14 +59,16 @@ int bitMask(int highbit, int lowbit)
 //(5,3)=0x38  0011 1000 故最高位为31 最低位为0
 {
 	highbit = ((highbit % 32) + 32) % 32;//同时起到保护程序作用
-	lowbit = ((lowbit % 32) + 32) % 32;//两语句仅为兼容check_binary 这样可以少写一个测试函数
+	lowbit = ((lowbit % 32) + 32) % 32;//两语句仅为兼容测试函数check_binary 这样可以少写一个测试函数
+
 	if (highbit < 0 || lowbit < 0)
 		return 0;
 	if (highbit < lowbit)
 		return 0;
 	//由于使用了上一位-1生成纯1串 故当highbit为31时 该式不成立
 	if (highbit != 31)
-		return ((1 << (highbit + 1)) - 1) - ((1 << lowbit) - 1);
+		//return ((1 << (highbit + 1)) - 1) - ((1 << lowbit) - 1);
+		return ((1 << (highbit + 1)) - 1) & (~((1 << lowbit) - 1));
 	else return (((1 << 31) - 1) | (1 << 31)) - ((1 << lowbit) - 1);
 }
 int bitMask_standard(int highbit, int lowbit)
