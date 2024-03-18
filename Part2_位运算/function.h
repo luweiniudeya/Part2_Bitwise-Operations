@@ -32,3 +32,4 @@ void check_single(bool mode, bool debugging_mode, int left = 0, int right = 0);/
 void check_binary(bool mode_random, bool debugging_mode, bool LMR);//Ë«Ä¿ÔËËã·û¼ì²â³ÌÐò
 void check_byteSwap(bool debugging_mode);
 void test();
+void wait();

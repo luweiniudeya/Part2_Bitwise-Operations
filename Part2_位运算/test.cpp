@@ -63,10 +63,12 @@ void check_single(bool mode, bool debugging_mode,int left,int right)
 			if (j == INF)
 				break;
 		}
-		if (!debugging_mode && flag)
+		if (flag)
 		{
 			cout << name[i] << "正确!" << endl;
 		}
+		if(debugging_mode)
+			wait();
 	}
 }
 void check_binary(bool mode_random, bool debugging_mode, bool LMR)
@@ -148,6 +150,8 @@ void check_binary(bool mode_random, bool debugging_mode, bool LMR)
 			cout << name[k] << "正确!" << endl;
 		else if(debugging_mode&&!flag)
 			cout << name[k] << "错误!" << endl;
+		if (debugging_mode)
+			wait();
 	}
 }
 void check_byteSwap(bool debugging_mode)
@@ -199,49 +203,65 @@ void wait()
 }
 void test()
 {
+	//void check_single(bool mode, bool debugging_mode,int left,int right)
 	bool single_mode = 0;			//1为int型全范围检测模式  0为手动输入检测范围模式
 	bool single_debugging_mode = 0;	//1为debugging显示  //left right缺省进入模式选择
 	//void check_single(bool mode, bool debugging_mode,int left,int right)
-	cout << "单目运算符 absVal,negate,isTmax,bitCount开始测试" << endl;
+	cout << "单目运算符 absVal,negate,isTmax,bitCount[-100,100]开始测试" << endl;
 	wait();
-	check_single(single_mode, single_debugging_mode);//0 0 手动快测
+	check_single(single_mode, single_debugging_mode,-100,100);//0 0 手动快测
 	wait();
-	check_single(0, 1);//手动debug测
-	wait();
+	check_single(0, 1,-100,100);//手动debug测
+
+
 	cout << "最小一百数测试" << endl;
+	wait();
 	check_single(0, 0, (1 << 31), (1 << 31) + 100);//最小一百数自动快测(101个数)
 	wait();
+
+
 	cout << "最小一百数debug测试" << endl;
-	check_single(0, 1, (1 << 31), (1 << 31) + 100);//最小一百数自动debug测
 	wait();
+	check_single(0, 1, (1 << 31), (1 << 31) + 100);//最小一百数自动debug测
+
+
 	cout << "最大一百数测试" << endl;
+	wait();
 	check_single(0, 0, (1 << 31) - 101, (1 << 31) - 1);//最大一百数自动快测
 	wait();
+
 	cout << "最大一百数debug测试" << endl;
-	check_single(0, 1, (1 << 31) - 101, (1 << 31) - 1);//最大一百数自动debug测
 	wait();
+	check_single(0, 1, (1 << 31) - 101, (1 << 31) - 1);//最大一百数自动debug测
 
 	//void check_binary(bool mode_random, bool debugging_mode, bool LMR)
 	cout << "双目运算符 bitAnd,bitOr,bitXor,bitMask,addOK开始测试" << endl;
 	wait();
 	cout << "普通测试" << endl;
+	wait();
 	check_binary(0, 0, 0);
 	wait();
 	cout << "随机数测试" << endl;
+	wait();
 	check_binary(1, 0, 0);
 	wait();
 	cout << "(x,y)满足x>y时的测试" << endl;
+	wait();
 	check_binary(0, 0, 1);
 	wait();
+
 	cout << "普通debug测试" << endl;
+	wait();
 	check_binary(0, 1, 0);
-	wait();
+
 	cout << "随机数debug测试" << endl;
+	wait();
 	check_binary(1, 1, 0);
-	wait();
+
 	cout << "随机数(x,y)满足x>y debug测试" << endl;
-	check_binary(1, 1, 1);
 	wait();
+	check_binary(1, 1, 1);
+
 
 	//void check_byteSwap(bool debugging_mode)
 	cout << "byteSwap测试" << endl;

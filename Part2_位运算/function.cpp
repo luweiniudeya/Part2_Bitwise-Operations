@@ -26,8 +26,16 @@ int isTmax(int x)//´Ë´¦ÎÒÏë¸Ä³Ébool µ«¼øÓÚÈÎÎñÊéÎªint ÈÔÓÃint£¨ÆäÊµÏë¼æÈİµ¥Ä¿¼ì²
 {
 	/*ÅĞ¶ÏxÊÇ·ñÎª×î´óµÄÕıÕûÊı£¨7FFFFFFF£©£¬
 	Ö»ÄÜÊ¹ÓÃ !¡¢ ~¡¢ & ¡¢^ ¡¢ | ¡¢ +*/
-	int temp = 1 << 31;
-	return !(~(temp ^ x));
+
+	/*int temp = 1 << 31;
+	return !(~(temp ^ x));*/
+
+	/*int y = x + 1;
+	return (!(y + y)) ^ (!~x);*/
+
+	if (!~x)
+		return 0;
+	return !((x + 1) + (x + 1));
 }
 int bitCount(int x)
 {
@@ -70,6 +78,11 @@ int bitMask(int highbit, int lowbit)
 		//return ((1 << (highbit + 1)) - 1) - ((1 << lowbit) - 1);
 		return ((1 << (highbit + 1)) - 1) & (~((1 << lowbit) - 1));
 	else return (((1 << 31) - 1) | (1 << 31)) - ((1 << lowbit) - 1);
+
+	//ÍøÉÏµÄ´úÂë
+	/*int tool = ~0;
+	int mid = tool << lowbit;
+	return ((mid ^ ((tool << highbit) << 1))) & mid;*/
 }
 int bitMask_standard(int highbit, int lowbit)
 {
