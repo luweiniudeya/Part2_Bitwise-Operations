@@ -13,6 +13,7 @@ int absVal(int x)
 {
 	//返回 x 的绝对值
 	//仅使用 !、 ~、 & 、^ 、 | 、 + 、 << 、 >> ， 运算次数不超过 10次
+
 	int temp = 1 << 31;
 	if (!(temp & x))//if中正负均true 仅0为false
 		return x;
@@ -21,21 +22,27 @@ int absVal(int x)
 int negate	(int x) {
 	//	不使用负号，实现 - x
 	return (~x) + 1;
+	/*int mask = x >> 31;
+	return (x ^ -1);*/
 }
 int isTmax(int x)//此处我想改成bool 但鉴于任务书为int 仍用int（其实想兼容单目检测返回值int,方便一点)
 {
 	/*判断x是否为最大的正整数（7FFFFFFF），
 	只能使用 !、 ~、 & 、^ 、 | 、 +*/
 
+	//1000....异或的思路
 	/*int temp = 1 << 31;
 	return !(~(temp ^ x));*/
 
+	//下面方法的简写形式
 	/*int y = x + 1;
 	return (!(y + y)) ^ (!~x);*/
 
 	if (!~x)
 		return 0;
 	return !((x + 1) + (x + 1));
+
+	
 }
 int bitCount(int x)
 {

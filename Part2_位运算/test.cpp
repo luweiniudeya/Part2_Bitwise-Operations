@@ -52,6 +52,12 @@ void check_single(bool mode, bool debugging_mode,int left,int right)
 				cout << "x=" << j << "\t" << (*array[i])(j) << " " << (*array_standard[i])(j) << endl;
 				if (j == INF)
 					break;
+				if ((*array[i])(j) != (*array_standard[i])(j))
+				{
+					cout << name[i] << "´íÎó!" << endl;
+					flag = 0;
+					break;
+				}
 				continue;
 			}
 			if ((*array[i])(j) != (*array_standard[i])(j))
