@@ -82,7 +82,7 @@ void check_binary(bool mode_random, bool debugging_mode, bool LMR)
 	//random开启随机数模式 debug开启调试模式 LMR强制保证x>=y
 	int n = 5;//函数个数
 	int numarray[10] = {
-		(1 << 31) - 1,
+		(1 << 31) - 1,//max数mod32恰好是31,可以为mask传特殊值
 		0, 1 << 31, 289, 327,
 		10086, 1999, 123456, -1, -8848
 	};//提供十个数进行运算

@@ -38,6 +38,7 @@ int isTmax(int x)//´Ë´¦ÎÒÏë¸Ä³Ébool µ«¼øÓÚÈÎÎñÊéÎªint ÈÔÓÃint£¨ÆäÊµÏë¼æÈİµ¥Ä¿¼ì²
 	/*int y = x + 1;
 	return (!(y + y)) ^ (!~x);*/
 
+	///(x+1)+(x+1)ÖµÎª0µÄÖ»ÓĞmaxint,ºÍ-1
 	if (!~x)
 		return 0;
 	return !((x + 1) + (x + 1));
@@ -72,7 +73,7 @@ int bitCount_standard(int x)
 int bitMask(int highbit, int lowbit)
 //ÒªÇóÖ»Ê¹ÓÃ ! ~ & ^ | + << >> £»ÔËËã´ÎÊı²»³¬¹ı 16´Î
 //(5,3)=0x38  0011 1000 ¹Ê×î¸ßÎ»Îª31 ×îµÍÎ»Îª0
-{
+{ 
 	highbit = ((highbit % 32) + 32) % 32;//Í¬Ê±Æğµ½±£»¤³ÌĞò×÷ÓÃ
 	lowbit = ((lowbit % 32) + 32) % 32;//Á½Óï¾ä½öÎª¼æÈİ²âÊÔº¯Êıcheck_binary ÕâÑù¿ÉÒÔÉÙĞ´Ò»¸ö²âÊÔº¯Êı
 
@@ -81,15 +82,16 @@ int bitMask(int highbit, int lowbit)
 	if (highbit < lowbit)
 		return 0;
 	//ÓÉÓÚÊ¹ÓÃÁËÉÏÒ»Î»-1Éú³É´¿1´® ¹Êµ±highbitÎª31Ê± ¸ÃÊ½²»³ÉÁ¢
-	if (highbit != 31)
-		//return ((1 << (highbit + 1)) - 1) - ((1 << lowbit) - 1);
-		return ((1 << (highbit + 1)) - 1) & (~((1 << lowbit) - 1));
-	else return (((1 << 31) - 1) | (1 << 31)) - ((1 << lowbit) - 1);
+	//if (highbit != 31)
+	//	//return ((1 << (highbit + 1)) - 1) - ((1 << lowbit) - 1);
+	//	return ((1 << (highbit + 1)) - 1) & (~((1 << lowbit) - 1));
+	//else return (((1 << 31) - 1) | (1 << 31)) - ((1 << lowbit) - 1);
 
-	//ÍøÉÏµÄ´úÂë
-	/*int tool = ~0;
+	//ĞÂ·½Ê½
+	int tool = ~0;
 	int mid = tool << lowbit;
-	return ((mid ^ ((tool << highbit) << 1))) & mid;*/
+	return ((mid ^ ((tool << highbit) << 1)));
+	
 }
 int bitMask_standard(int highbit, int lowbit)
 {
@@ -111,6 +113,7 @@ int bitMask_standard(int highbit, int lowbit)
 }
 int addOK(int x, int y)
 {
+	//±È½ÏÇ°ºóµÄ·ûºÅÎ»
 	int temp = 1 << 31;
 	bool sig1 = temp & x;
 	bool sig2 = temp & y;
