@@ -91,6 +91,7 @@ int bitMask(int highbit, int lowbit)
 	int tool = ~0;
 	int mid = tool << lowbit;
 	return ((mid ^ ((tool << highbit) << 1)));
+	//return ((mid ^ ((tool << (highbit + 1))))); ´íÎó·½Ê½
 	
 }
 int bitMask_standard(int highbit, int lowbit)
